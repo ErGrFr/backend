@@ -1,4 +1,4 @@
-// chargement du module express
+//-------------------------------- express ----------------------------
 const express = require('express');
 // creation 
 const app = express();
@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());  // ou body parser , on intercepte toutes les requetes json
 
 
-// mongoDB 
+//------------------------- mongoDB ---------------------------------
 const mongoose = require('mongoose');
 mongoose.connect('mongodb+srv://EricG:Lolita60540@cluster0.9srzq.mongodb.net/Cluster0?retryWrites=true&w=majority',
   { useNewUrlParser: true,
@@ -16,29 +16,8 @@ mongoose.connect('mongodb+srv://EricG:Lolita60540@cluster0.9srzq.mongodb.net/Clu
 
 //mongodb+srv://EricG:Lolita60540@cluster0.9srzq.mongodb.net/Cluster0?retryWrites=true&w=majority
 
+const stuffRoutes = require('./routes/stuff');
 
-//------- MiddleWare ---------------------
-
-// app.use((req, res, next)=>{
-//     console.log('requete recu 1');
-//     next();
-// })
-
-// app.use((req, res, next)=>{
-//     res.status(201);
-//     console.log('201');
-//     next();
-// })
-
-// app.use((req, res, next)=> {
-//     res.json({message: 'requete recu 2'});
-//     next();
-// })
-
-// app.use((req, res, next)=>{
-//     console.log('reponse envoyée avec succès');
-
-// })
 
 //-------------------- new API --------------------
 
@@ -49,36 +28,9 @@ app.use((req, res, next) => {
     next();
   });
 
-// requete POST
-app.post('/api/stuff',(req, res, next)=>{
-    console.log(req.body);  // grace a express
-    res.status(201).json({
-        message: 'l objet a été créé'
-    });
-});
+app.use(bodyParser.json());   // body parser
 
-// requete GET
-app.get('/api/stuff', (req, res, next) => {
-    const stuff = [
-      {
-        _id: 'oeihfzeoi',
-        title: 'Mon premier objet',
-        description: 'Les infos de mon premier objet',
-        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-        price: 4900,
-        userId: 'qsomihvqios',
-      },
-      {
-        _id: 'oeihfzeomoihi',
-        title: 'Mon deuxième objet',
-        description: 'Les infos de mon deuxième objet',
-        imageUrl: 'https://cdn.pixabay.com/photo/2019/06/11/18/56/camera-4267692_1280.jpg',
-        price: 2900,
-        userId: 'qsomihvqios',
-      },
-    ];
-    res.status(200).json(stuff);
-  });
+app.use('/api/stuff',stuffRoutes);
 
 //--------------------------------------------------
 
